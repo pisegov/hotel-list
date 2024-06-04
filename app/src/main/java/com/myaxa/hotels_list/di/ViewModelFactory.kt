@@ -2,9 +2,11 @@ package com.myaxa.hotels_list.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.myaxa.hotel_list_impl.HotelListViewModel
 import dagger.Binds
 import dagger.MapKey
 import dagger.Module
+import dagger.multibindings.IntoMap
 import javax.inject.Inject
 import javax.inject.Provider
 import kotlin.reflect.KClass
@@ -29,6 +31,10 @@ internal interface ViewModelModule {
     @ApplicationScope
     fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 
+    @Binds
+    @IntoMap
+    @ViewModelKey(HotelListViewModel::class)
+    fun bindHotelListViewModel(viewModel: HotelListViewModel): ViewModel
 }
 
 @Target(

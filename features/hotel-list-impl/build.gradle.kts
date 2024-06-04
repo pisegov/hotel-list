@@ -28,6 +28,9 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -36,10 +39,15 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
 
+    implementation(libs.androidx.fragment.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+
     implementation(libs.dagger)
     kapt(libs.dagger.compiler)
 
     implementation(project(":features:hotel-list-api"))
+    implementation(project(":domain"))
+    implementation(project(":common"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
