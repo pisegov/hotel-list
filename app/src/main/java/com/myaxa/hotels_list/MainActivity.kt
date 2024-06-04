@@ -5,8 +5,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.launch
+import com.myaxa.common.navigator.NavigatorProvider
+import com.myaxa.hotel_list_api.HotelListApiProvider
 
 internal class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,5 +18,14 @@ internal class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        navigateToHotelList()
+    }
+
+    private fun navigateToHotelList() {
+        val navigator = (applicationContext as NavigatorProvider).provideNavigator()
+        val hotelListApi = (applicationContext as HotelListApiProvider).provideHotelListApi()
+
+        navigator.navigateToFragment(supportFragmentManager, hotelListApi.provideHotelListFragment(), "hotel_list")
     }
 }

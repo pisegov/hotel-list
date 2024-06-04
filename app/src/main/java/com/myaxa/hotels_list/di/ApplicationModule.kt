@@ -1,10 +1,12 @@
 package com.myaxa.hotels_list.di
 
 import android.content.Context
+import com.myaxa.common.navigator.Navigator
 import com.myaxa.data.HotelRepositoryImpl
 import com.myaxa.database.LocalDataSource
 import com.myaxa.domain.HotelRepository
 import com.myaxa.hotels_list.BuildConfig
+import com.myaxa.hotels_list.R
 import com.myaxa.network.NetworkDataSource
 import com.myaxa.network.RetrofitModule
 import dagger.Binds
@@ -28,6 +30,9 @@ internal interface ApplicationModule {
         fun provideLocalDataSource(applicationContext: Context): LocalDataSource {
             return LocalDataSource(applicationContext)
         }
+
+        @Provides
+        fun provideNavigator(): Navigator = Navigator(R.id.fragment_container)
     }
 
     @Binds
