@@ -10,12 +10,15 @@ import com.myaxa.common.unsafeLazy
 import com.myaxa.hotel_list_impl.databinding.FragmentHotelListBinding
 import com.myaxa.hotel_list_impl.di.DaggerHotelListFragmentComponent
 import com.myaxa.hotel_list_impl.di.DaggerHotelListViewComponent
+import com.myaxa.hotel_list_impl.di.HotelListDependencies
+import com.myaxa.hotel_list_impl.di.HotelListDependenciesProvider
 import com.myaxa.hotel_list_impl.di.HotelListFragmentComponent
 import com.myaxa.hotel_list_impl.di.HotelListViewComponent
 
 internal class HotelListFragment : Fragment(R.layout.fragment_hotel_list) {
 
-    private val dependencies: HotelListDependencies get() =
+    private val dependencies: HotelListDependencies
+        get() =
         (requireActivity().applicationContext as HotelListDependenciesProvider)
             .provideHotelListDependencies()
 

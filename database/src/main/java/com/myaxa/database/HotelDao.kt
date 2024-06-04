@@ -1,6 +1,8 @@
 package com.myaxa.database
 
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Upsert
 import com.myaxa.domain.HotelId
@@ -9,10 +11,10 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 internal interface HotelDao {
 
-    @Upsert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertHotelList(list: List<HotelDBO>)
 
-    @Upsert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertHotel(item: HotelDBO)
 
     @Upsert

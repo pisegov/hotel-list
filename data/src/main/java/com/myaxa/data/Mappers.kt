@@ -14,6 +14,7 @@ internal fun HotelDTO.toDBO() = HotelDBO(
     address = address,
     stars = stars,
     distance = distance,
+    suitesAvailability = suitesAvailability,
 )
 
 internal fun HotelDetailsDTO.toDBO() = HotelFullDBO(
@@ -23,10 +24,10 @@ internal fun HotelDetailsDTO.toDBO() = HotelFullDBO(
         address = address,
         stars = stars,
         distance = distance,
+        suitesAvailability = suitesAvailability,
     ),
     details = HotelDetailsDBO(
         hotelId = id,
-        suitesAvailability = suitesAvailability,
         imageUrl = imageUrl,
         latitude = latitude,
         longitude = longitude,
@@ -35,10 +36,12 @@ internal fun HotelDetailsDTO.toDBO() = HotelFullDBO(
 
 internal fun HotelDBO.toDBO() = Hotel(
     id = hotelId,
+    cacheId = cacheId,
     name = name,
     address = address,
     stars = stars,
     distance = distance,
+    suitesAvailability = suitesAvailability
 )
 
 internal fun HotelFullDBO.toHotelDetails() = HotelDetails(
@@ -47,7 +50,7 @@ internal fun HotelFullDBO.toHotelDetails() = HotelDetails(
     address = hotel.address,
     stars = hotel.stars,
     distance = hotel.distance,
-    suitesAvailability = details.suitesAvailability.split(":"),
+    suitesAvailability = hotel.suitesAvailability.split(":"),
     imageUrl = details.imageUrl,
     latitude = details.latitude,
     longitude = details.longitude

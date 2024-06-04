@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="distance">Distance to the center: %1$s</string>
+    <string name="free_rooms_number">Free rooms: %1$d</string>
+
+    <string name="sorting">Sorting: %1$s</string>
+    <string name="no_sorting">Do not sort</string>
+    <string name="by_distance">Sort by distance to the center</string>
+    <string name="by_free_rooms_number">Sort by free rooms number\n</string>
+</resources>
