@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.myaxa.common.unsafeLazy
+import com.myaxa.hotel_details_api.HotelDetailsApiProvider
 import com.myaxa.hotel_list_impl.databinding.FragmentHotelListBinding
 import com.myaxa.hotel_list_impl.di.DaggerHotelListFragmentComponent
 import com.myaxa.hotel_list_impl.di.DaggerHotelListViewComponent
@@ -31,6 +32,7 @@ internal class HotelListFragment : Fragment(R.layout.fragment_hotel_list) {
             fragment = this,
             viewModel = viewModel,
             navigator = dependencies.navigator,
+            hotelDetailsApi = (requireActivity().applicationContext as HotelDetailsApiProvider).provideHotelDetailsApi()
         )
     }
 

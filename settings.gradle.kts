@@ -21,10 +21,16 @@ dependencyResolutionManagement {
 
 rootProject.name = "Hotel List"
 include(":app")
+
 include(":network")
-include(":domain")
-include(":data")
 include(":database")
+include(":data")
+
+include(":domain")
+
 include(":features:hotel-list-api")
 include(":features:hotel-list-impl")
+include(":features:hotel-details-api")
+include(":features:hotel-details-impl")
+
 include(":common")

@@ -46,6 +46,7 @@ dependencies {
     kapt(libs.dagger.compiler)
 
     implementation(project(":features:hotel-list-api"))
+    implementation(project(":features:hotel-details-api"))
     implementation(project(":domain"))
     implementation(project(":common"))
 

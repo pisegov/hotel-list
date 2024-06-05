@@ -9,7 +9,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.myaxa.common.SpaceItemDecoration
 import com.myaxa.common.collectOnLifecycle
-import com.myaxa.common.navigator.Navigator
 import com.myaxa.common.setThrottleClickListener
 import com.myaxa.hotel_list_impl.databinding.FragmentHotelListBinding
 import com.myaxa.hotel_list_impl.model.SortingType
@@ -20,7 +19,6 @@ internal class HotelListViewController @Inject constructor(
     private val viewModel: HotelListViewModel,
     private val binding: FragmentHotelListBinding,
     private val lifecycleOwner: LifecycleOwner,
-    private val navigator: Navigator,
     private val hotelListAdapter: HotelListAdapter,
     private val spaceItemDecoration: SpaceItemDecoration,
 ) {
