@@ -19,7 +19,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Hotels List"
+rootProject.name = "Hotel List"
 include(":app")
 include(":network")
 include(":domain")

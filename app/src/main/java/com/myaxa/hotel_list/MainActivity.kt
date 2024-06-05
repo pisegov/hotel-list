@@ -1,4 +1,4 @@
-package com.myaxa.hotels_list
+package com.myaxa.hotel_list
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge

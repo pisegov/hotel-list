@@ -1,4 +1,4 @@
-package com.myaxa.hotels_list.di
+package com.myaxa.hotel_list.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

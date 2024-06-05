@@ -22,7 +22,7 @@ class HotelListViewModel @Inject constructor(
 
     init {
         repository.hotelsFlow.onEach { hotelList ->
-            _screenStateFlow.emit(ScreenState(hotelsList = hotelList.map { it.toUiModel() }))
+            _screenStateFlow.emit(ScreenState(hotelList = hotelList.map { it.toUiModel() }))
         }.onStart {
             repository.loadHotels()
         }.launchIn(viewModelScope)
@@ -37,7 +37,7 @@ class HotelListViewModel @Inject constructor(
         }
     }
 
-    internal fun sortHotelsList(sortingType: SortingType) {
+    internal fun sortHotelList(sortingType: SortingType) {
 
         if (sortingType == _screenStateFlow.value.sortingType) return
 
@@ -47,7 +47,7 @@ class HotelListViewModel @Inject constructor(
             // to demonstrate that the loading is actually showing
             delay(600)
 
-            val list = _screenStateFlow.value.hotelsList
+            val list = _screenStateFlow.value.hotelList
 
             val sorted = when (sortingType) {
                 SortingType.NONE -> list.sortedBy { it.cacheId }
@@ -56,7 +56,7 @@ class HotelListViewModel @Inject constructor(
             }
 
             _screenStateFlow.update { state ->
-                state.copy(hotelsList = sorted, sortingType = sortingType, isLoading = false)
+                state.copy(hotelList = sorted, sortingType = sortingType, isLoading = false)
             }
         }
     }

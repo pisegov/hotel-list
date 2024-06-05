@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.myaxa.hotels_list"
+    namespace = "com.myaxa.hotel_list"
     compileSdk = 34
 
     compileOptions {

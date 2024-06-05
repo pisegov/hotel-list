@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.myaxa.hotels_list"
+    namespace = "com.myaxa.hotel_list"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.myaxa.hotels_list"
+        applicationId = "com.myaxa.hotel_list"
         minSdk = 26
         targetSdk = 34
         versionCode = 1

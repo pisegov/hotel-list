@@ -49,7 +49,7 @@ internal class HotelListViewController @Inject constructor(
 
     private fun setUpScreenStateObserver() {
         viewModel.screenStateFlow.collectOnLifecycle(lifecycleOwner) {
-            hotelListAdapter.submitList(it.hotelsList) {
+            hotelListAdapter.submitList(it.hotelList) {
                 binding.hotelList.scrollToPosition(0)
             }
 
@@ -74,7 +74,7 @@ internal class HotelListViewController @Inject constructor(
                 else -> SortingType.NONE
             }
 
-            viewModel.sortHotelsList(sortingType)
+            viewModel.sortHotelList(sortingType)
             true
         }
 
