@@ -5,6 +5,8 @@ import com.myaxa.common.navigator.Navigator
 import com.myaxa.common.navigator.NavigatorProvider
 import com.myaxa.hotel_details_api.HotelDetailsApi
 import com.myaxa.hotel_details_api.HotelDetailsApiProvider
+import com.myaxa.hotel_details_impl.di.HotelDetailsDependencies
+import com.myaxa.hotel_details_impl.di.HotelDetailsDependenciesProvider
 import com.myaxa.hotel_list.di.ApplicationComponent
 import com.myaxa.hotel_list.di.DaggerApplicationComponent
 import com.myaxa.hotel_list_api.HotelListApi
@@ -16,7 +18,8 @@ internal class HotelsApplication : Application(),
                                    NavigatorProvider,
                                    HotelListApiProvider,
                                    HotelListDependenciesProvider,
-                                   HotelDetailsApiProvider {
+                                   HotelDetailsApiProvider,
+                                   HotelDetailsDependenciesProvider {
 
     private val component: ApplicationComponent by lazy(mode = LazyThreadSafetyMode.PUBLICATION) {
         DaggerApplicationComponent.factory().create(applicationContext = this)
@@ -29,4 +32,6 @@ internal class HotelsApplication : Application(),
     override fun provideHotelListDependencies(): HotelListDependencies = component
 
     override fun provideHotelDetailsApi(): HotelDetailsApi = component.hotelDetailsApi
+
+    override fun provideHotelDetailsDependencies(): HotelDetailsDependencies = component
 }

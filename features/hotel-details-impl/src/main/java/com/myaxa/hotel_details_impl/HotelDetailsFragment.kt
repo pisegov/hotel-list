@@ -5,7 +5,10 @@ import android.view.View
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.viewmodel.MutableCreationExtras
 import com.myaxa.domain.HotelId
+import com.myaxa.hotel_details_impl.di.HotelDetailsDependenciesProvider
 
 internal class HotelDetailsFragment : Fragment(R.layout.fragment_hotel_details) {
 
@@ -19,6 +22,24 @@ internal class HotelDetailsFragment : Fragment(R.layout.fragment_hotel_details) 
             }
         }
     }
+
+    private val viewModelFactory
+        get() = (requireActivity().applicationContext as HotelDetailsDependenciesProvider)
+            .provideHotelDetailsDependencies()
+            .viewModelFactory
+
+    private val viewModel: HotelDetailsViewModel by viewModels(
+        extrasProducer = {
+
+            val id = arguments?.getLong(HOTEL_ID_KEY)
+                ?: throw NoSuchElementException("No hotel id found in arguments")
+
+            MutableCreationExtras().apply {
+                set(HotelDetailsViewModel.CREATION_EXTRA_HOTEL_ID_KEY, id)
+            }
+        },
+        factoryProducer = { viewModelFactory }
+    )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
