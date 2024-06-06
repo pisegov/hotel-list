@@ -38,5 +38,5 @@ data class HotelFullDBO(
         parentColumn = "hotel_id",
         entityColumn = "hotel_id",
     )
-    val details: HotelDetailsDBO,
+    val details: HotelDetailsDBO?,
 )

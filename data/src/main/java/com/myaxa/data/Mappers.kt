@@ -51,7 +51,7 @@ internal fun HotelFullDBO.toHotelDetails() = HotelDetails(
     stars = hotel.stars,
     distance = hotel.distance,
     suitesAvailability = hotel.suitesAvailability.split(":"),
-    imageUrl = details.imageUrl,
-    latitude = details.latitude,
-    longitude = details.longitude
+    imageUrl = details?.imageUrl,
+    latitude = details?.latitude,
+    longitude = details?.longitude
 )

@@ -2,7 +2,6 @@ package com.myaxa.database
 
 import android.content.Context
 import androidx.room.Room
-import androidx.room.withTransaction
 import com.myaxa.domain.HotelId
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -27,7 +26,7 @@ class LocalDataSource internal constructor(private val db: HotelsDatabase) {
     }
 
     suspend fun insertHotel(item: HotelFullDBO) = withContext(Dispatchers.IO) {
-        dao.insertHotelDetails(item.details)
+        item.details?.let { dao.insertHotelDetails(it) }
     }
 
     fun getHotelsFlow(): Flow<List<HotelDBO>> = dao.getHotelsFlow()

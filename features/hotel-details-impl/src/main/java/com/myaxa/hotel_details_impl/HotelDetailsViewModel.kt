@@ -2,39 +2,45 @@ package com.myaxa.hotel_details_impl
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.myaxa.common.ViewModelCreationExtraKey
 import com.myaxa.domain.HotelId
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import com.myaxa.domain.HotelRepository
+import com.myaxa.hotel_details_impl.model.ScreenState
+import com.myaxa.hotel_details_impl.model.toUiModel
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
-class HotelDetailsViewModel @AssistedInject constructor(
-    @Assisted(HOTEL_ID_KEY) private val hotelId: HotelId,
+class HotelDetailsViewModel(
+    private val hotelId: HotelId,
+    private val repository: HotelRepository,
 ) : ViewModel() {
 
-    @AssistedFactory
-    interface DaggerAssistedFactory {
-        fun create(@Assisted(HOTEL_ID_KEY) hotelId: HotelId): HotelDetailsViewModel
-    }
-
     companion object {
-        private const val HOTEL_ID_KEY = "hotel_id"
         internal val CREATION_EXTRA_HOTEL_ID_KEY = ViewModelCreationExtraKey<HotelId>()
     }
-}
 
-@Suppress("UNCHECKED_CAST")
-class HotelDetailsViewModelFactory @Inject constructor(
-    private val daggerAssistedFactory: HotelDetailsViewModel.DaggerAssistedFactory,
-) : ViewModelProvider.Factory {
+    internal val hotelFlow = repository.getHotelDetailsFlow(hotelId).onStart {
+        repository.loadHotelDetails(hotelId)
+    }.map {
+        ScreenState(hotel = it.toUiModel())
+    }.stateIn(viewModelScope, SharingStarted.Lazily, ScreenState(isLoading = true))
 
-    override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
+    @Suppress("UNCHECKED_CAST")
+    class Factory @Inject constructor(
+        private val repository: HotelRepository,
+    ) : ViewModelProvider.Factory {
 
-        val hotelId = extras[HotelDetailsViewModel.CREATION_EXTRA_HOTEL_ID_KEY]
-            ?: throw NoSuchElementException()
+        override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
 
-        return daggerAssistedFactory.create(hotelId) as T
+            val hotelId = extras[CREATION_EXTRA_HOTEL_ID_KEY]
+                ?: throw NoSuchElementException()
+
+            return HotelDetailsViewModel(hotelId, repository) as T
+        }
     }
 }

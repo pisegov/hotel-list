@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.myaxa.hotel_details_impl.HotelDetailsViewModel
-import com.myaxa.hotel_details_impl.HotelDetailsViewModelFactory
 import com.myaxa.hotel_list_impl.HotelListViewModel
 import dagger.Binds
 import dagger.MapKey
@@ -46,7 +45,7 @@ internal interface MultiViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(HotelDetailsViewModel::class)
-    fun bindHotelDetailsViewModelFactory(impl: HotelDetailsViewModelFactory): ViewModelProvider.Factory
+    fun bindHotelDetailsViewModelFactory(impl: HotelDetailsViewModel.Factory): ViewModelProvider.Factory
 }
 
 @Target(

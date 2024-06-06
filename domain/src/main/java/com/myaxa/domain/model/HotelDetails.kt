@@ -10,7 +10,7 @@ data class HotelDetails(
     val distance: Float,
     val suitesAvailability: List<String>,
 
-    val imageUrl: String,
-    val latitude: Double,
-    val longitude: Double,
+    val imageUrl: String?,
+    val latitude: Double?,
+    val longitude: Double?,
 )

@@ -9,5 +9,7 @@ interface HotelRepository {
 
     suspend fun loadHotels()
 
-    suspend fun getHotel(id: HotelId): Flow<HotelDetails>
+    fun getHotelDetailsFlow(id: HotelId): Flow<HotelDetails>
+
+    suspend fun loadHotelDetails(id: HotelId)
 }

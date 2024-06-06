@@ -8,7 +8,6 @@ import com.myaxa.domain.model.HotelDetails
 import com.myaxa.network.NetworkDataSource
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 
 class HotelRepositoryImpl @Inject constructor(
@@ -30,16 +29,16 @@ class HotelRepositoryImpl @Inject constructor(
         localDataSource.insertHotelList(remoteList.map { it.toDBO() })
     }
 
-    override suspend fun getHotel(id: HotelId): Flow<HotelDetails> {
+    override fun getHotelDetailsFlow(id: HotelId): Flow<HotelDetails> = localDataSource.getHotel(id).map { it.toHotelDetails() }
+
+    override suspend fun loadHotelDetails(id: HotelId) {
         val remoteResult = networkDataSource.getHotel(id)
 
         val remoteHotel = remoteResult.getOrElse {
-            return flow {  }
+            return
         }
 
         localDataSource.insertHotel(remoteHotel.toDBO())
-
-        return localDataSource.getHotel(id).map { it.toHotelDetails() }
     }
 }
 
