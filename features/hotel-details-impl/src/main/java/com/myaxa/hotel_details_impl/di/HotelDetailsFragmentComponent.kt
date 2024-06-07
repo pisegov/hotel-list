@@ -1,6 +1,5 @@
 package com.myaxa.hotel_details_impl.di
 
-import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import coil.ImageLoader
 import com.myaxa.common.SpaceItemDecoration
 import com.myaxa.hotel_details_impl.HotelDetailsViewModel
@@ -25,7 +24,6 @@ internal interface HotelDetailsFragmentComponent {
     val viewModel: HotelDetailsViewModel
     val hotelListAdapter: HotelDetailsAdapter
     val spaceItemDecoration: SpaceItemDecoration
-    val recycledViewPool: RecycledViewPool
     val imageLoader: ImageLoader
 }
 

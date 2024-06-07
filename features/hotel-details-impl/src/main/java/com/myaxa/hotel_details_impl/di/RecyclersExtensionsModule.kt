@@ -1,6 +1,5 @@
 package com.myaxa.hotel_details_impl.di
 
-import androidx.recyclerview.widget.RecyclerView
 import com.myaxa.common.SpaceItemDecoration
 import com.myaxa.common.dpToPx
 import dagger.Module
@@ -19,12 +18,6 @@ internal class RecyclersExtensionsModule {
     @RoomListSpacer
     fun provideRoomListSpaceItemDecoration(): SpaceItemDecoration {
         return SpaceItemDecoration(8.dpToPx())
-    }
-
-    @Provides
-    @HotelDetailsFragmentScope
-    fun provideRecycledViewPool(): RecyclerView.RecycledViewPool {
-        return RecyclerView.RecycledViewPool()
     }
 }
 

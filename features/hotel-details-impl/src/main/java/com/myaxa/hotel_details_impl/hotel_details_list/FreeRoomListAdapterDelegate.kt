@@ -2,7 +2,6 @@ package com.myaxa.hotel_details_impl.hotel_details_list
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.myaxa.common.SpaceItemDecoration
 import com.myaxa.common.inflater
@@ -15,7 +14,6 @@ import javax.inject.Inject
 internal class FreeRoomListAdapterDelegate @Inject constructor(
     private val freeRoomListAdapter: FreeRoomListAdapter,
     @param:RoomListSpacer private val spaceItemDecoration: SpaceItemDecoration,
-    private val sharedRecycledViewPool: RecyclerView.RecycledViewPool,
 ) : AdapterDelegate {
 
     override val binder: (ViewBinding, HotelDetailListItem) -> Unit = { binding, item ->
@@ -26,9 +24,10 @@ internal class FreeRoomListAdapterDelegate @Inject constructor(
 
         with(binding.freeRoomsList) {
             adapter = freeRoomListAdapter
+
             layoutManager = LinearLayoutManager(binding.root.context, LinearLayoutManager.HORIZONTAL, false)
-            addItemDecoration(spaceItemDecoration)
-            setRecycledViewPool(sharedRecycledViewPool)
+
+            if (itemDecorationCount < 1) addItemDecoration(spaceItemDecoration)
         }
     }
 

@@ -2,9 +2,11 @@ package com.myaxa.hotel_details_impl.hotel_details_list
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
+import com.myaxa.hotel_details_impl.di.HotelDetailsFragmentScope
 import com.myaxa.hotel_details_impl.model.HotelDetailListItem
 import javax.inject.Inject
 
+@HotelDetailsFragmentScope
 internal class HotelDetailsAdapter @Inject constructor(
     delegates: Set<@JvmSuppressWildcards AdapterDelegate>,
 ) : ListAdapter<HotelDetailListItem,

@@ -5,7 +5,7 @@ import com.myaxa.hotel_details_impl.model.HotelDetailListItem
 
 internal class HotelDetailsDiffUtilCallback : DiffUtil.ItemCallback<HotelDetailListItem>() {
     override fun areItemsTheSame(oldItem: HotelDetailListItem, newItem: HotelDetailListItem): Boolean {
-        return oldItem === newItem
+        return oldItem == newItem
     }
 
     override fun areContentsTheSame(oldItem: HotelDetailListItem, newItem: HotelDetailListItem): Boolean {

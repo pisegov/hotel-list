@@ -9,10 +9,13 @@ import com.myaxa.domain.HotelId
 import com.myaxa.domain.HotelRepository
 import com.myaxa.hotel_details_impl.model.ScreenState
 import com.myaxa.hotel_details_impl.model.toUiModel
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class HotelDetailsViewModel(
@@ -24,11 +27,32 @@ class HotelDetailsViewModel(
         internal val CREATION_EXTRA_HOTEL_ID_KEY = ViewModelCreationExtraKey<HotelId>()
     }
 
-    internal val hotelFlow = repository.getHotelDetailsFlow(hotelId).onStart {
-        repository.loadHotelDetails(hotelId)
-    }.map {
-        ScreenState(hotel = it.toUiModel())
-    }.stateIn(viewModelScope, SharingStarted.Lazily, ScreenState(isLoading = true))
+    init {
+        repository.getHotelDetailsFlow(hotelId).onEach {
+            _stateFlow.tryEmit(ScreenState(hotel = it.toUiModel()))
+        }.onStart {
+            repository.loadHotelDetails(hotelId)
+        }.launchIn(viewModelScope)
+
+        repository.errorFlow.onEach { throwable ->
+            _stateFlow.update { state -> state.copy(errorText = throwable.message) }
+        }.launchIn(viewModelScope)
+    }
+
+    private val _stateFlow = MutableStateFlow(ScreenState(isLoading = true))
+    internal val stateFlow = _stateFlow.asStateFlow()
+
+    fun loadHotelDetails() {
+        viewModelScope.launch {
+            _stateFlow.update { it.copy(isRefreshing = true) }
+            repository.loadHotelDetails(hotelId)
+            _stateFlow.update { it.copy(isRefreshing = false) }
+        }
+    }
+
+    fun setErrorWasShown() {
+        _stateFlow.update { it.copy(errorText = null) }
+    }
 
     @Suppress("UNCHECKED_CAST")
     class Factory @Inject constructor(

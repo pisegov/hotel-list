@@ -41,6 +41,7 @@ class HotelRepositoryImpl @Inject constructor(
         val remoteResult = networkDataSource.getHotel(id)
 
         val remoteHotel = remoteResult.getOrElse {
+            errorFlow.emit(it)
             return
         }
 

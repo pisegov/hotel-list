@@ -1,10 +1,10 @@
 package com.myaxa.hotel_details_impl
 
 import android.view.View
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
 import coil.ImageLoader
 import coil.load
 import com.myaxa.common.SpaceItemDecoration
@@ -22,32 +22,48 @@ internal class HotelDetailsViewController @Inject constructor(
     private val lifecycleOwner: LifecycleOwner,
     private val hotelDetailsAdapter: HotelDetailsAdapter,
     private val spaceItemDecoration: SpaceItemDecoration,
-    private val sharedRecycledViewPool: RecycledViewPool,
     private val imageLoader: ImageLoader,
 ) {
 
     fun setUpViews() {
 
-        setUpScreenStateObserver()
-
         setUpHotelDetailList()
-    }
 
-    private fun setUpScreenStateObserver() {
+        setUpSwipeToRefresh()
 
-        viewModel.hotelFlow.collectOnLifecycle(lifecycleOwner) { screenState ->
-
-            setItemsVisibility(screenState.isLoading)
-
-            screenState.hotel?.let { setUpHotelDetails(it) }
-        }
+        setUpScreenStateObserver()
     }
 
     private fun setUpHotelDetailList() = with(binding.hotelDetailList) {
         adapter = hotelDetailsAdapter
         layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         addItemDecoration(spaceItemDecoration)
-        setRecycledViewPool(sharedRecycledViewPool)
+    }
+
+    private fun setUpSwipeToRefresh() {
+        binding.swipeToRefresh.setOnRefreshListener {
+            viewModel.loadHotelDetails()
+        }
+        binding.appbar?.addOnOffsetChangedListener { _, verticalOffset ->
+            binding.swipeToRefresh.isEnabled = verticalOffset == 0
+        }
+    }
+
+    private fun setUpScreenStateObserver() {
+
+        viewModel.stateFlow.collectOnLifecycle(lifecycleOwner) { screenState ->
+
+            setItemsVisibility(screenState.isLoading)
+
+            binding.swipeToRefresh.isRefreshing = screenState.isRefreshing
+
+            screenState.hotel?.let { setUpHotelDetails(it) }
+
+            screenState.errorText?.let {
+                Toast.makeText(binding.root.context, it, Toast.LENGTH_SHORT).show()
+                viewModel.setErrorWasShown()
+            }
+        }
     }
 
     private fun setItemsVisibility(isLoading: Boolean) = with(binding) {

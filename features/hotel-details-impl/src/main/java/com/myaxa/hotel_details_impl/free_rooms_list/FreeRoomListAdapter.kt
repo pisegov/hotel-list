@@ -6,8 +6,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.myaxa.common.inflater
 import com.myaxa.hotel_details_impl.databinding.ItemFreeRoomBinding
+import com.myaxa.hotel_details_impl.di.HotelDetailsFragmentScope
 import javax.inject.Inject
 
+@HotelDetailsFragmentScope
 internal class FreeRoomListAdapter @Inject constructor() : ListAdapter<String, FreeRoomViewHolder>(FreeRoomDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FreeRoomViewHolder {
