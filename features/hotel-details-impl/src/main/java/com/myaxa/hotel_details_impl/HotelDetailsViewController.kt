@@ -1,29 +1,91 @@
 package com.myaxa.hotel_details_impl
 
+import android.view.View
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView.RecycledViewPool
+import coil.ImageLoader
+import coil.load
+import com.myaxa.common.SpaceItemDecoration
 import com.myaxa.common.collectOnLifecycle
 import com.myaxa.hotel_details_impl.databinding.FragmentHotelDetailsBinding
+import com.myaxa.hotel_details_impl.hotel_details_list.HotelDetailsAdapter
+import com.myaxa.hotel_details_impl.model.HotelDetailListItem
+import com.myaxa.hotel_details_impl.model.HotelDetailsUi
+import com.myaxa.hotel_details_impl.util.CropTransformation
 import javax.inject.Inject
 
 internal class HotelDetailsViewController @Inject constructor(
-    private val fragment: Fragment,
     private val viewModel: HotelDetailsViewModel,
     private val binding: FragmentHotelDetailsBinding,
     private val lifecycleOwner: LifecycleOwner,
-){
+    private val hotelDetailsAdapter: HotelDetailsAdapter,
+    private val spaceItemDecoration: SpaceItemDecoration,
+    private val sharedRecycledViewPool: RecycledViewPool,
+    private val imageLoader: ImageLoader,
+) {
+
     fun setUpViews() {
+
         setUpScreenStateObserver()
+
+        setUpHotelDetailList()
     }
 
     private fun setUpScreenStateObserver() {
-        viewModel.hotelFlow.collectOnLifecycle(lifecycleOwner) {
-            it.hotel?.run {
-                binding.id.text = name
-            }
 
-            binding.progressBar.isVisible = it.isLoading
+        viewModel.hotelFlow.collectOnLifecycle(lifecycleOwner) { screenState ->
+
+            setItemsVisibility(screenState.isLoading)
+
+            screenState.hotel?.let { setUpHotelDetails(it) }
         }
+    }
+
+    private fun setUpHotelDetailList() = with(binding.hotelDetailList) {
+        adapter = hotelDetailsAdapter
+        layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        addItemDecoration(spaceItemDecoration)
+        setRecycledViewPool(sharedRecycledViewPool)
+    }
+
+    private fun setItemsVisibility(isLoading: Boolean) = with(binding) {
+
+        progressBar.isVisible = isLoading
+
+        collapsingToolbar?.visibility = if (isLoading) View.INVISIBLE else View.VISIBLE
+
+        listOf(title, rating, image, hotelDetailList).forEach {
+            it?.isVisible = !isLoading
+        }
+    }
+
+    private fun setUpHotelDetails(hotel: HotelDetailsUi) = with(binding) {
+
+        collapsingToolbar?.title = hotel.name
+        title?.text = hotel.name
+
+        image.load(hotel.imageUrl, imageLoader) {
+            lifecycle(lifecycleOwner)
+            placeholder(R.drawable.hotel_placeholder)
+            transformations(CropTransformation())
+            error(R.drawable.hotel_placeholder)
+        }
+
+        rating.text = hotel.stars.toString()
+
+        setHotelDetailsList(hotel)
+    }
+
+    private fun setHotelDetailsList(hotel: HotelDetailsUi) {
+        val list = mutableListOf(
+            HotelDetailListItem.AddressCard(hotel.address, distanceToTheCenter = hotel.distance.toString()),
+            HotelDetailListItem.FreeRoomsItem(rooms = hotel.suitesAvailability),
+        )
+        if (hotel.latitude != null && hotel.longitude != null) {
+            list.add(HotelDetailListItem.CoordinatesCard(hotel.latitude.toString(), hotel.longitude.toString()))
+        }
+        hotelDetailsAdapter.submitList(list)
     }
 }

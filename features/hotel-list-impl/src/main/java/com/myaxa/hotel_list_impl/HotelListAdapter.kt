@@ -1,10 +1,10 @@
 package com.myaxa.hotel_list_impl
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.myaxa.common.inflater
 import com.myaxa.common.setThrottleClickListener
 import com.myaxa.domain.HotelId
 import com.myaxa.hotel_list_impl.databinding.ItemHotelBinding
@@ -17,7 +17,7 @@ internal class HotelListAdapter(
 ) : ListAdapter<HotelUi, HotelItemViewHolder>(HotelDiffUtilCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HotelItemViewHolder {
 
-        val binding = ItemHotelBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemHotelBinding.inflate(parent.inflater, parent, false)
 
         return HotelItemViewHolder(binding, navigateToDetails)
     }

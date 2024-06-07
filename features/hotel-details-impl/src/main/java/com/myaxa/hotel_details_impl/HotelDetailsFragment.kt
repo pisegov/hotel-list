@@ -30,10 +30,8 @@ internal class HotelDetailsFragment : Fragment(R.layout.fragment_hotel_details) 
         }
     }
 
-    private val viewModelFactory
-        get() = (requireActivity().applicationContext as HotelDetailsDependenciesProvider)
-            .provideHotelDetailsDependencies()
-            .viewModelFactory
+    private val dependencies get() = (requireActivity().applicationContext as HotelDetailsDependenciesProvider)
+        .provideHotelDetailsDependencies()
 
     private val viewModel: HotelDetailsViewModel by viewModels(
         extrasProducer = {
@@ -45,13 +43,13 @@ internal class HotelDetailsFragment : Fragment(R.layout.fragment_hotel_details) 
                 set(HotelDetailsViewModel.CREATION_EXTRA_HOTEL_ID_KEY, id)
             }
         },
-        factoryProducer = { viewModelFactory }
+        factoryProducer = { dependencies.viewModelFactory }
     )
 
     private val fragmentComponent: HotelDetailsFragmentComponent by unsafeLazy {
         DaggerHotelDetailsFragmentComponent.factory().create(
-            fragment = this,
             viewModel = viewModel,
+            imageLoader = dependencies.imageLoader
         )
     }
 

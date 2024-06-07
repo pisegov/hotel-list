@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+     <string name="free_rooms">Free rooms</string>
+     <string name="coordinates">Coordinates</string>
+     <string name="address">Address</string>
+     <string name="distance_to_the_city_center">Distance to the city center</string>
+     <string name="longitude">Longitude: %1$s</string>
+     <string name="latitude">Latitude: %1$s</string>
+
+</resources>

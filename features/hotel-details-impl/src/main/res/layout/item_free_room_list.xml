@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/Subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        android:paddingHorizontal="32dp"
+        android:text="@string/free_rooms"
+        tools:textColor="@android:color/background_dark" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/free_rooms_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:nestedScrollingEnabled="false"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/default_item_margin"
+        android:paddingVertical="6dp"
+        tools:itemCount="3"
+        tools:listitem="@layout/item_free_room" />
+
+</LinearLayout>

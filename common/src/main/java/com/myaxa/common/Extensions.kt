@@ -1,6 +1,7 @@
 package com.myaxa.common
 
 import android.content.res.Resources
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
 import androidx.annotation.CheckResult
@@ -43,6 +44,8 @@ fun EditText.textChanges(): Flow<CharSequence?> {
         awaitClose { removeTextChangedListener(listener) }
     }.onStart { emit(text) }
 }
+
+val View.inflater: LayoutInflater get() = LayoutInflater.from(this.context)
 
 fun View.setThrottleClickListener(action: (v: View?) -> Unit) {
     setThrottleClickListener(action, 700)
