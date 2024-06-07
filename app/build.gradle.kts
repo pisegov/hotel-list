@@ -22,6 +22,7 @@ android {
         }
 
         buildConfigField("String", "BASE_URL", properties.getProperty("BASE_URL"))
+        buildConfigField("String", "IMAGE_BASE_URL", properties.getProperty("IMAGE_BASE_URL"))
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -55,6 +56,8 @@ dependencies {
     implementation(libs.dagger)
     implementation(libs.jakarta.inject.api)
     kapt(libs.dagger.compiler)
+
+    implementation(libs.coil.base)
 
     implementation(project(":domain"))
 

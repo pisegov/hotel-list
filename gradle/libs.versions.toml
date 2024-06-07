@@ -44,6 +44,7 @@ androidx-fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", ve
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 
 coil = { module = "io.coil-kt:coil", version.ref = "coil" }
+coil-base = { module = "io.coil-kt:coil-base", version.ref = "coil" }
 
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }

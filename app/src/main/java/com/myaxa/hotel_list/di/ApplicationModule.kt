@@ -1,7 +1,9 @@
 package com.myaxa.hotel_list.di
 
 import android.content.Context
+import coil.ImageLoader
 import com.myaxa.common.navigator.Navigator
+import com.myaxa.data.ImageBaseUrlInterceptor
 import com.myaxa.data.HotelRepositoryImpl
 import com.myaxa.database.LocalDataSource
 import com.myaxa.domain.HotelRepository
@@ -33,6 +35,17 @@ internal interface ApplicationModule {
 
         @Provides
         fun provideNavigator(): Navigator = Navigator(R.id.fragment_container)
+
+        @Provides
+        @ApplicationScope
+        fun provideImageLoader(applicationContext: Context): ImageLoader {
+
+            return ImageLoader.Builder(applicationContext)
+                .components {
+                    add(ImageBaseUrlInterceptor(BuildConfig.IMAGE_BASE_URL))
+                }
+                .build()
+        }
     }
 
     @Binds

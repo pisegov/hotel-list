@@ -20,6 +20,8 @@ dependencies {
     implementation(libs.jakarta.inject.api)
     implementation(libs.kotlinx.coroutines.core)
 
+    implementation(libs.coil.base)
+
     implementation(project(":domain"))
     implementation(project(":network"))
     implementation(project(":database"))
