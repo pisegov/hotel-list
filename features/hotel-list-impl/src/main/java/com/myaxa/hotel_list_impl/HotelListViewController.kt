@@ -1,5 +1,6 @@
 package com.myaxa.hotel_list_impl
 
+import android.widget.Toast
 import androidx.annotation.MenuRes
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.get
@@ -11,6 +12,7 @@ import com.myaxa.common.SpaceItemDecoration
 import com.myaxa.common.collectOnLifecycle
 import com.myaxa.common.setThrottleClickListener
 import com.myaxa.hotel_list_impl.databinding.FragmentHotelListBinding
+import com.myaxa.hotel_list_impl.model.ScreenState
 import com.myaxa.hotel_list_impl.model.SortingType
 import javax.inject.Inject
 
@@ -28,15 +30,11 @@ internal class HotelListViewController @Inject constructor(
 
         setUpHotelList()
 
+        setUpSwipeToRefresh()
+
         setUpSortingButton()
 
         setUpScreenStateObserver()
-    }
-
-    private fun setUpSortingButton() {
-        binding.sortingButton.setThrottleClickListener {
-            showSortingMenu(R.menu.sorting)
-        }
     }
 
     private fun setUpHotelList() = with(binding.hotelList) {
@@ -45,18 +43,41 @@ internal class HotelListViewController @Inject constructor(
         layoutManager = LinearLayoutManager(fragment.requireContext(), LinearLayoutManager.VERTICAL, false)
     }
 
+    private fun setUpSwipeToRefresh() = with(binding.swipeToRefresh) {
+        setOnRefreshListener {
+            viewModel.loadHotelList()
+            isRefreshing = false
+        }
+    }
+
+    private fun setUpSortingButton() {
+        binding.sortingButton.setThrottleClickListener {
+            showSortingMenu(R.menu.sorting)
+        }
+    }
+
     private fun setUpScreenStateObserver() {
-        viewModel.screenStateFlow.collectOnLifecycle(lifecycleOwner) {
-            hotelListAdapter.submitList(it.hotelList) {
-                binding.hotelList.scrollToPosition(0)
-            }
+        viewModel.screenStateFlow.collectOnLifecycle(lifecycleOwner) { state ->
+            updateState(state)
+        }
+    }
 
-            binding.progressBar.isVisible = it.isLoading
+    private fun updateState(state: ScreenState) {
+        hotelListAdapter.submitList(state.hotelList) {
+            binding.hotelList.scrollToPosition(0)
+        }
 
-            binding.sortingLabel.isVisible = it.sortingType != SortingType.NONE
-            if (it.sortingType != SortingType.NONE) {
-                binding.sortingLabel.text = context.getString(R.string.sorting, it.sortingType.text)
-            }
+        binding.progressBar.isVisible = state.isLoading
+        binding.swipeToRefresh.isRefreshing = false
+
+        binding.sortingLabel.isVisible = state.sortingType != SortingType.NONE
+        if (state.sortingType != SortingType.NONE) {
+            binding.sortingLabel.text = context.getString(R.string.sorting, state.sortingType.text)
+        }
+
+        state.errorText?.let { message ->
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+            viewModel.setErrorWasShown()
         }
     }
 

@@ -26,6 +26,10 @@ class HotelListViewModel @Inject constructor(
         }.onStart {
             repository.loadHotels()
         }.launchIn(viewModelScope)
+
+        repository.errorFlow.onEach { throwable ->
+            _screenStateFlow.update { it.copy(errorText = throwable.message, isLoading = false) }
+        }.launchIn(viewModelScope)
     }
 
     private val _screenStateFlow = MutableStateFlow(ScreenState(isLoading = true))
@@ -33,7 +37,9 @@ class HotelListViewModel @Inject constructor(
 
     internal fun loadHotelList() {
         viewModelScope.launch {
+            _screenStateFlow.update { it.copy(isLoading = true) }
             repository.loadHotels()
+            _screenStateFlow.update { it.copy(isLoading = false) }
         }
     }
 
@@ -59,5 +65,9 @@ class HotelListViewModel @Inject constructor(
                 state.copy(hotelList = sorted, sortingType = sortingType, isLoading = false)
             }
         }
+    }
+
+    internal fun setErrorWasShown() {
+        _screenStateFlow.update { it.copy(errorText = null) }
     }
 }

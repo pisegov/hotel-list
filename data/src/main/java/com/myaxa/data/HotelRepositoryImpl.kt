@@ -7,7 +7,9 @@ import com.myaxa.domain.model.Hotel
 import com.myaxa.domain.model.HotelDetails
 import com.myaxa.network.NetworkDataSource
 import jakarta.inject.Inject
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.map
 
 class HotelRepositoryImpl @Inject constructor(
@@ -19,10 +21,14 @@ class HotelRepositoryImpl @Inject constructor(
         list.map { it.toHotel() }
     }
 
+    override val errorFlow: MutableSharedFlow<Throwable> =
+        MutableSharedFlow(replay = 0, extraBufferCapacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+
     override suspend fun loadHotels() {
         val remoteResult = networkDataSource.getHotels()
 
         val remoteList = remoteResult.getOrElse {
+            errorFlow.emit(it)
             return
         }
 

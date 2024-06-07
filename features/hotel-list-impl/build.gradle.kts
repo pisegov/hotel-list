@@ -40,6 +40,7 @@ dependencies {
     implementation(libs.material)
 
     implementation(libs.androidx.fragment.ktx)
+    implementation(libs.androidx.swiperefreshlayout)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
     implementation(libs.dagger)

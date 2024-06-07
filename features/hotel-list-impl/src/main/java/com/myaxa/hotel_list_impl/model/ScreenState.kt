@@ -4,4 +4,5 @@ internal data class ScreenState(
     val hotelList: List<HotelUi> = emptyList(),
     val sortingType: SortingType = SortingType.NONE,
     val isLoading: Boolean = false,
+    val errorText: String? = null,
 )
