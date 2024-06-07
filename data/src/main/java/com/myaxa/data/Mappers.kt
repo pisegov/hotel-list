@@ -34,7 +34,7 @@ internal fun HotelDetailsDTO.toDBO() = HotelFullDBO(
     ),
 )
 
-internal fun HotelDBO.toDBO() = Hotel(
+internal fun HotelDBO.toHotel() = Hotel(
     id = hotelId,
     cacheId = cacheId,
     name = name,
@@ -50,7 +50,7 @@ internal fun HotelFullDBO.toHotelDetails() = HotelDetails(
     address = hotel.address,
     stars = hotel.stars,
     distance = hotel.distance,
-    suitesAvailability = hotel.suitesAvailability.split(":"),
+    suitesAvailability = hotel.suitesAvailability.split(":").filter { it.isNotBlank() },
     imageUrl = details?.imageUrl,
     latitude = details?.latitude,
     longitude = details?.longitude

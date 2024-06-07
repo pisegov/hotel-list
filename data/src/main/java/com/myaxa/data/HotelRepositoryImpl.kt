@@ -16,7 +16,7 @@ class HotelRepositoryImpl @Inject constructor(
 ) : HotelRepository {
 
     override val hotelsFlow: Flow<List<Hotel>> = localDataSource.getHotelsFlow().map { list ->
-        list.map { it.toDBO() }
+        list.map { it.toHotel() }
     }
 
     override suspend fun loadHotels() {

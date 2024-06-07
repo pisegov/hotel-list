@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="16dp">
+    app:cardElevation="@dimen/card_elevation"
+    app:cardCornerRadius="@dimen/card_corner_radius">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -14,11 +15,10 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/title"
+            style="@style/Subtitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:textSize="20sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/rating"
             app:layout_constraintHorizontal_bias="0.0"
@@ -30,13 +30,9 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/rating"
+            style="@style/RatingText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawablePadding="6dp"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:drawableStartCompat="@drawable/ic_star"
-            app:drawableTint="@android:color/holo_orange_light"
             app:layout_constraintBottom_toBottomOf="@id/title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
@@ -46,11 +42,10 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/address"
+            style="@style/CommonText.Italic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textSize="14sp"
-            android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -60,11 +55,10 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/distance"
+            style="@style/CommonText.Italic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:textSize="14sp"
-            android:textStyle="italic"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/free_rooms_number"
             app:layout_constraintHorizontal_bias="0.0"
@@ -76,11 +70,10 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/free_rooms_number"
+            style="@style/CommonText.Italic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:textSize="14sp"
-            android:textStyle="italic"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"

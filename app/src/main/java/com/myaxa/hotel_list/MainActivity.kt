@@ -19,7 +19,9 @@ internal class MainActivity : AppCompatActivity() {
             insets
         }
 
-        navigateToHotelList()
+        if (savedInstanceState == null) {
+            navigateToHotelList()
+        }
     }
 
     private fun navigateToHotelList() {

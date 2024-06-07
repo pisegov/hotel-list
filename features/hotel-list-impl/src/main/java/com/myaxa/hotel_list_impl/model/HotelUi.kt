@@ -20,5 +20,5 @@ fun Hotel.toUiModel() = HotelUi(
     address = address,
     stars = stars,
     distance = distance,
-    freeRoomsNumber = suitesAvailability.split(':').count()
+    freeRoomsNumber = suitesAvailability.split(':').count { it.isNotBlank() }
 )
