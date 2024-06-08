@@ -38,6 +38,13 @@ internal class HotelListFragment : Fragment(R.layout.fragment_hotel_list) {
 
     private var viewComponent: HotelListViewComponent? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        if (savedInstanceState == null) {
+            viewModel.initStateFlow()
+        }
+        super.onCreate(savedInstanceState)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding = FragmentHotelListBinding.inflate(inflater, container, false)
 

@@ -27,7 +27,10 @@ class HotelDetailsViewModel(
         internal val CREATION_EXTRA_HOTEL_ID_KEY = ViewModelCreationExtraKey<HotelId>()
     }
 
-    init {
+    private val _stateFlow = MutableStateFlow(ScreenState(isLoading = true))
+    internal val stateFlow = _stateFlow.asStateFlow()
+
+    internal fun initStateFlow() {
         repository.getHotelDetailsFlow(hotelId).onEach {
             _stateFlow.tryEmit(ScreenState(hotel = it.toUiModel()))
         }.onStart {
@@ -39,10 +42,7 @@ class HotelDetailsViewModel(
         }.launchIn(viewModelScope)
     }
 
-    private val _stateFlow = MutableStateFlow(ScreenState(isLoading = true))
-    internal val stateFlow = _stateFlow.asStateFlow()
-
-    fun loadHotelDetails() {
+    internal fun loadHotelDetails() {
         viewModelScope.launch {
             _stateFlow.update { it.copy(isRefreshing = true) }
             repository.loadHotelDetails(hotelId)
@@ -50,7 +50,7 @@ class HotelDetailsViewModel(
         }
     }
 
-    fun setErrorWasShown() {
+    internal fun setErrorWasShown() {
         _stateFlow.update { it.copy(errorText = null) }
     }
 

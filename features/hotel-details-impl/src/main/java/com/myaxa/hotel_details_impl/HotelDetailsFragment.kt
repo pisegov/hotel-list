@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.MutableCreationExtras
 import com.myaxa.common.unsafeLazy
 import com.myaxa.domain.HotelId
@@ -30,19 +31,12 @@ internal class HotelDetailsFragment : Fragment(R.layout.fragment_hotel_details) 
         }
     }
 
-    private val dependencies get() = (requireActivity().applicationContext as HotelDetailsDependenciesProvider)
-        .provideHotelDetailsDependencies()
+    private val dependencies
+        get() = (requireActivity().applicationContext as HotelDetailsDependenciesProvider)
+            .provideHotelDetailsDependencies()
 
     private val viewModel: HotelDetailsViewModel by viewModels(
-        extrasProducer = {
-
-            val id = arguments?.getLong(HOTEL_ID_KEY)
-                ?: throw NoSuchElementException("No hotel id found in arguments")
-
-            MutableCreationExtras().apply {
-                set(HotelDetailsViewModel.CREATION_EXTRA_HOTEL_ID_KEY, id)
-            }
-        },
+        extrasProducer = { provideHotelIdToViewModel() },
         factoryProducer = { dependencies.viewModelFactory }
     )
 
@@ -55,7 +49,14 @@ internal class HotelDetailsFragment : Fragment(R.layout.fragment_hotel_details) 
 
     private var viewComponent: HotelDetailsViewComponent? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        if (savedInstanceState == null) {
+            viewModel.initStateFlow()
+        }
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding = FragmentHotelDetailsBinding.inflate(inflater, container, false)
 
         viewComponent = DaggerHotelDetailsViewComponent.factory().create(
@@ -72,5 +73,15 @@ internal class HotelDetailsFragment : Fragment(R.layout.fragment_hotel_details) 
     override fun onDestroyView() {
         super.onDestroyView()
         viewComponent = null
+    }
+
+    private fun provideHotelIdToViewModel(): CreationExtras {
+
+        val id = arguments?.getLong(HOTEL_ID_KEY)
+            ?: throw NoSuchElementException("No hotel id found in arguments")
+
+        return MutableCreationExtras().apply {
+            set(HotelDetailsViewModel.CREATION_EXTRA_HOTEL_ID_KEY, id)
+        }
     }
 }

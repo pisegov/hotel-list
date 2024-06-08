@@ -20,7 +20,10 @@ class HotelListViewModel @Inject constructor(
     private val repository: HotelRepository,
 ) : ViewModel() {
 
-    init {
+    private val _screenStateFlow = MutableStateFlow(ScreenState(isLoading = true))
+    internal val screenStateFlow = _screenStateFlow.asStateFlow()
+
+    internal fun initStateFlow() {
         repository.hotelsFlow.onEach { hotelList ->
             _screenStateFlow.emit(ScreenState(hotelList = hotelList.map { it.toUiModel() }))
         }.onStart {
@@ -31,9 +34,6 @@ class HotelListViewModel @Inject constructor(
             _screenStateFlow.update { it.copy(errorText = throwable.message, isLoading = false) }
         }.launchIn(viewModelScope)
     }
-
-    private val _screenStateFlow = MutableStateFlow(ScreenState(isLoading = true))
-    internal val screenStateFlow = _screenStateFlow.asStateFlow()
 
     internal fun loadHotelList() {
         viewModelScope.launch {
