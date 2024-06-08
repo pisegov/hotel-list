@@ -42,6 +42,7 @@ internal class HotelDetailsFragment : Fragment(R.layout.fragment_hotel_details) 
 
     private val fragmentComponent: HotelDetailsFragmentComponent by unsafeLazy {
         DaggerHotelDetailsFragmentComponent.factory().create(
+            fragment = this,
             viewModel = viewModel,
             imageLoader = dependencies.imageLoader
         )

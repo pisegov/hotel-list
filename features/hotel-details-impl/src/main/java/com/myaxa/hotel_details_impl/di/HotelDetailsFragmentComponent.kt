@@ -1,5 +1,6 @@
 package com.myaxa.hotel_details_impl.di
 
+import androidx.fragment.app.Fragment
 import coil.ImageLoader
 import com.myaxa.common.SpaceItemDecoration
 import com.myaxa.hotel_details_impl.HotelDetailsViewModel
@@ -16,11 +17,13 @@ internal interface HotelDetailsFragmentComponent {
     @Component.Factory
     interface Factory {
         fun create(
+            @BindsInstance fragment: Fragment,
             @BindsInstance viewModel: HotelDetailsViewModel,
             @BindsInstance imageLoader: ImageLoader,
         ): HotelDetailsFragmentComponent
     }
 
+    val fragment: Fragment
     val viewModel: HotelDetailsViewModel
     val hotelListAdapter: HotelDetailsAdapter
     val spaceItemDecoration: SpaceItemDecoration

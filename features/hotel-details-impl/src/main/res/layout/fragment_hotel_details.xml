@@ -65,6 +65,19 @@
                 <androidx.appcompat.widget.Toolbar
                     android:layout_width="wrap_content"
                     android:layout_height="?actionBarSize"
+                    android:paddingStart="48dp"
+                    app:layout_collapseMode="pin" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/back_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="?actionBarSize"
+                    android:layout_gravity="top|start|center_vertical"
+                    android:layout_marginTop="8dp"
+                    android:foregroundGravity="center_vertical"
+                    android:padding="16dp"
+                    android:src="@drawable/ic_arrow_back"
+                    android:tint="@color/black"
                     app:layout_collapseMode="pin" />
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>

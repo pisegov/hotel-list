@@ -2,7 +2,10 @@ package com.myaxa.hotel_details_impl
 
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.ColorUtils
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.ImageLoader
@@ -17,6 +20,7 @@ import com.myaxa.hotel_details_impl.util.CropTransformation
 import javax.inject.Inject
 
 internal class HotelDetailsViewController @Inject constructor(
+    private val fragment: Fragment,
     private val viewModel: HotelDetailsViewModel,
     private val binding: FragmentHotelDetailsBinding,
     private val lifecycleOwner: LifecycleOwner,
@@ -25,11 +29,15 @@ internal class HotelDetailsViewController @Inject constructor(
     private val imageLoader: ImageLoader,
 ) {
 
+    private val context get() = fragment.requireContext()
+
     fun setUpViews() {
 
         setUpHotelDetailList()
 
         setUpSwipeToRefresh()
+
+        setUpBackButton()
 
         setUpScreenStateObserver()
     }
@@ -44,8 +52,24 @@ internal class HotelDetailsViewController @Inject constructor(
         binding.swipeToRefresh.setOnRefreshListener {
             viewModel.loadHotelDetails()
         }
+
         binding.appbar?.addOnOffsetChangedListener { _, verticalOffset ->
             binding.swipeToRefresh.isEnabled = verticalOffset == 0
+        }
+    }
+
+    private fun setUpBackButton() {
+        val expandedColor = ContextCompat.getColor(context, R.color.back_button_color_expanded)
+        val collapsedColor = ContextCompat.getColor(context, R.color.back_button_color_collapsed)
+
+        binding.appbar?.addOnOffsetChangedListener { appbar, verticalOffset ->
+            binding.backButton.setColorFilter(
+                ColorUtils.blendARGB(expandedColor, collapsedColor, -verticalOffset.toFloat() / appbar.totalScrollRange)
+            )
+        }
+
+        binding.backButton.setOnClickListener {
+            fragment.parentFragmentManager.popBackStack()
         }
     }
 
@@ -60,7 +84,7 @@ internal class HotelDetailsViewController @Inject constructor(
             screenState.hotel?.let { setUpHotelDetails(it) }
 
             screenState.errorText?.let {
-                Toast.makeText(binding.root.context, it, Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
                 viewModel.setErrorWasShown()
             }
         }
@@ -70,7 +94,9 @@ internal class HotelDetailsViewController @Inject constructor(
 
         progressBar.isVisible = isLoading
 
-        collapsingToolbar?.visibility = if (isLoading) View.INVISIBLE else View.VISIBLE
+        listOf(collapsingToolbar, backButton).forEach {
+            it?.visibility = if (isLoading) View.INVISIBLE else View.VISIBLE
+        }
 
         listOf(title, rating, image, hotelDetailList).forEach {
             it?.isVisible = !isLoading
