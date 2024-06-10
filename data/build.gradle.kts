@@ -25,4 +25,10 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":network"))
     implementation(project(":database"))
+
+    testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.turbine)
+    testImplementation(project(":common"))
 }
