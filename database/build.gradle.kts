@@ -41,8 +41,4 @@ dependencies {
     ksp(libs.androidx.room.compiler)
 
     implementation(project(":domain"))
-
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
 }
