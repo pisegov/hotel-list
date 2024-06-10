@@ -7,6 +7,7 @@ import com.myaxa.common.SpaceItemDecoration
 import com.myaxa.common.inflater
 import com.myaxa.hotel_details_impl.databinding.ItemFreeRoomListBinding
 import com.myaxa.hotel_details_impl.di.RoomListSpacer
+import com.myaxa.hotel_details_impl.model.FreeRoomItem
 import com.myaxa.hotel_details_impl.free_rooms_list.FreeRoomListAdapter
 import com.myaxa.hotel_details_impl.model.HotelDetailListItem
 import javax.inject.Inject
@@ -20,7 +21,7 @@ internal class FreeRoomListAdapterDelegate @Inject constructor(
         binding as ItemFreeRoomListBinding
         item as HotelDetailListItem.FreeRoomsItem
 
-        freeRoomListAdapter.submitList(item.rooms)
+        freeRoomListAdapter.submitList(item.rooms.map { FreeRoomItem(it.toInt()) })
 
         with(binding.freeRoomsList) {
             adapter = freeRoomListAdapter

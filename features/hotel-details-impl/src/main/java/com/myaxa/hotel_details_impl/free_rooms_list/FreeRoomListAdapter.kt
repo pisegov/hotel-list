@@ -7,10 +7,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.myaxa.common.inflater
 import com.myaxa.hotel_details_impl.databinding.ItemFreeRoomBinding
 import com.myaxa.hotel_details_impl.di.HotelDetailsFragmentScope
+import com.myaxa.hotel_details_impl.model.FreeRoomItem
 import javax.inject.Inject
 
 @HotelDetailsFragmentScope
-internal class FreeRoomListAdapter @Inject constructor() : ListAdapter<String, FreeRoomViewHolder>(FreeRoomDiffUtil()) {
+internal class FreeRoomListAdapter @Inject constructor() : ListAdapter<FreeRoomItem, FreeRoomViewHolder>(FreeRoomDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FreeRoomViewHolder {
 
@@ -24,12 +25,12 @@ internal class FreeRoomListAdapter @Inject constructor() : ListAdapter<String, F
 }
 
 internal class FreeRoomViewHolder(private val binding: ItemFreeRoomBinding) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(number: String) {
-        binding.number.text = number
+    fun bind(item: FreeRoomItem) {
+        binding.number.text = item.number.toString()
     }
 }
 
-internal class FreeRoomDiffUtil : DiffUtil.ItemCallback<String>() {
-    override fun areItemsTheSame(oldItem: String, newItem: String): Boolean = oldItem == newItem
-    override fun areContentsTheSame(oldItem: String, newItem: String): Boolean = oldItem == newItem
+internal class FreeRoomDiffUtil : DiffUtil.ItemCallback<FreeRoomItem>() {
+    override fun areItemsTheSame(oldItem: FreeRoomItem, newItem: FreeRoomItem): Boolean = oldItem == newItem
+    override fun areContentsTheSame(oldItem: FreeRoomItem, newItem: FreeRoomItem): Boolean = oldItem.number == newItem.number
 }

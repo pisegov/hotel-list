@@ -8,6 +8,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import coil.ImageLoader
 import coil.load
 import com.myaxa.common.SpaceItemDecoration
@@ -49,6 +50,8 @@ internal class HotelDetailsViewController @Inject constructor(
     }
 
     private fun setUpSwipeToRefresh() {
+        binding.swipeToRefresh as SwipeRefreshLayout
+
         binding.swipeToRefresh.setOnRefreshListener {
             viewModel.loadHotelDetails()
         }
@@ -79,7 +82,7 @@ internal class HotelDetailsViewController @Inject constructor(
 
             setItemsVisibility(screenState.isLoading)
 
-            binding.swipeToRefresh.isRefreshing = screenState.isRefreshing
+            (binding.swipeToRefresh as SwipeRefreshLayout).isRefreshing = screenState.isRefreshing
 
             screenState.hotel?.let { setUpHotelDetails(it) }
 
