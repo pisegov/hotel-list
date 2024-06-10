@@ -28,4 +28,7 @@ dependencies {
     implementation(libs.androidx.fragment.ktx)
 
     implementation(libs.jakarta.inject.api)
+
+    implementation(libs.junit)
+    implementation(libs.kotlinx.coroutines.test)
 }
