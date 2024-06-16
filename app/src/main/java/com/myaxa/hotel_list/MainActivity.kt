@@ -5,7 +5,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.myaxa.common.navigator.NavigatorProvider
+import androidx.fragment.app.commit
 import com.myaxa.hotel_list_api.HotelListApiProvider
 
 internal class MainActivity : AppCompatActivity() {
@@ -25,9 +25,10 @@ internal class MainActivity : AppCompatActivity() {
     }
 
     private fun navigateToHotelList() {
-        val navigator = (applicationContext as NavigatorProvider).provideNavigator()
         val hotelListApi = (applicationContext as HotelListApiProvider).provideHotelListApi()
 
-        navigator.navigateToFragment(supportFragmentManager, hotelListApi.provideHotelListFragment(), "hotel_list")
+        supportFragmentManager.commit {
+            replace(R.id.fragment_container, hotelListApi.provideHotelListFragment())
+        }
     }
 }
