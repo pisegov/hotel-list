@@ -63,8 +63,14 @@ internal class HotelListViewController @Inject constructor(
     }
 
     private fun updateState(state: ScreenState) {
+        // if the current list is empty then need just to set up it
+        // if it is not empty then need to update it and scroll to the top
+        val needToKeepScrollState = hotelListAdapter.currentList.isEmpty()
+
         hotelListAdapter.submitList(state.hotelList) {
-            binding.hotelList.scrollToPosition(0)
+            if (!needToKeepScrollState) {
+                binding.hotelList.scrollToPosition(0)
+            }
         }
 
         binding.progressBar.isVisible = state.isLoading
