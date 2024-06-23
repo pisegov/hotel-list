@@ -27,9 +27,9 @@ data class HotelDBO(
 @Entity(tableName = "hotel_details")
 data class HotelDetailsDBO(
     @ColumnInfo("hotel_id") @PrimaryKey val hotelId: HotelId,
-    @ColumnInfo("image") val imageUrl: String,
-    @ColumnInfo("lat") val latitude: Double,
-    @ColumnInfo("lon") val longitude: Double,
+    @ColumnInfo("image") val imageUrl: String?,
+    @ColumnInfo("lat") val latitude: Double?,
+    @ColumnInfo("lon") val longitude: Double?,
 )
 
 data class HotelFullDBO(

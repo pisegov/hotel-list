@@ -11,8 +11,8 @@ data class HotelDetailsDTO (
     @SerialName("address") val address: String,
     @SerialName("stars") val stars: Float,
     @SerialName("distance") val distance: Float,
-    @SerialName("image") val imageUrl: String,
+    @SerialName("image") val imageUrl: String?,
     @SerialName("suites_availability") val suitesAvailability: String,
-    @SerialName("lat") val latitude: Double,
-    @SerialName("lon") val longitude: Double,
+    @SerialName("lat") val latitude: Double?,
+    @SerialName("lon") val longitude: Double?,
 )
